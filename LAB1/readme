@@ -1,0 +1,103 @@
+LAB1 of CS 460
+ASSIGNMENTs: 
+
+Make a hard copy of this page. Write YOUR answers to the underlined spaces
+
+
+Turn in a hard copy on Monday when demo YOUR LAB1A.
+
+
+
+
+1. Druing booting, what does BIOS do?_______________________________
+   How many sectors does BIOS load from the boot device?____________
+   Where in memory does BIOS load the booter?________________________
+
+
+2. The booter's bs.s file begins with
+   ------------------------------------------------------------
+        mov  ax,#0x9000     ! set ES to 0x9000
+        mov  es,ax
+        xor  bx,bx          ! clear BX = 0
+
+        xor  dx,dx          ! DH=head=0,   DL=drive=0
+        xor  cx,cx          ! CL=cylinder, CL=sector
+        incb cl             ! BIOS counts sector from 1
+        mov  ax, #0x0202    ! AH=READ      AL=2 sectors
+        int  0x13           ! call BIOS INT-13
+(a). What does this piece code do?_____________________________________
+
+        jmpi start,0x9000   ! CS=0x9000, IP=start
+
+(b). After executing the above jmpi instruction, where is CPU executing?
+     _________________________________________________________________
+
+
+3. The booter's bs.s code continues with
+
+start:                    
+        mov  ax,cs          ! Set segment registers for CPU
+        mov  ds,ax          ! we know ES,CS=0x9000. Let DS=CS  
+        mov  ss,ax         
+        mov  es,ax
+        mov  sp,#8192       ! SP = 8192 above SS=0x9000
+
+(a). What does this piece of code do?________________________________________
+
+(b). WHY DO WE HAVE TO SET the CPU's CS, DS, SS to 0x9000?___________________
+
+(c). sp=#8192: What's the PHYSICAL address of the stack pointer?_____________
+
+
+4. In your booter, you MUST write a prints(char *s) function to print a
+   string. 
+   WHY can't you use printf() of the C library?____________________
+   WHY can't you use YOUR printf()  function?____________________
+
+5. What's the algorithm that converts a disk block number, blk, to CHS format?
+   ____________________________________________________________________________
+
+6. The assembly function readfd(int cyl, head,sector, char *buf) is
+---------------------------------------------------------------------
+_readfd:                             
+       push  bp
+       mov   bp,sp            ! bp = stack frame pointer
+HERE:
+       movb  dl, #0x00        ! drive 0=FD0
+       movb  dh, 6[bp]        ! head
+       movb  cl, 8[bp]        ! sector
+       incb  cl
+       movb  ch, 4[bp]        ! cyl
+       mov   bx, 10[bp]       ! BX=buf ==> memory addr=(ES,BX)
+       mov   ax, #0x0202      ! READ 2 sectors to (EX, BX)
+
+       int  0x13              ! call BIOS to read the block 
+       jb   _error            ! to error if CarryBit is on [read failed]
+
+       pop  bp                
+       ret
+------------------------------------------------------------------------
+It is called as  readfd(cyl, head, sector, buf) from C code.
+
+(a). Draw a diagram to show the stack contents at the label HERE:
+     ________________________________________________________________
+
+(b). HOW DOES readfd() ACCESS the parameters cyl, head, sector, buf?
+
+(c). What is the PHYSICAL address used by BIOS to read the disk block?
+     ________________________________________________________________
+
+
+7. In the booter, how did it find the root INODE?
+ 
+8. From the root INODE, how did it find the INODE of /boot?
+
+
+9. Assume: you have found the INODE of /boot/mtx. The INODE has
+   
+   12 DIRECT blocks:       i_block[0] to i_block[11] 
+   MANY INDIRECT blocks:
+
+   How does it load the blocks to the segment 0x1000?
+
+=====================================================================
