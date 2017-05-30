@@ -1,0 +1,8 @@
+./mku init
+./mku login
+./mku sh
+./mku cat
+./mku cp
+./mku grep
+./mku l2u
+./mku more
