@@ -1,0 +1,43 @@
+                      LAB Assignment #2
+
+              DUE: DEMO to TA on Friday 2-3-2017
+
+Part A. PRE_WORK: NO turn-in but you MUST do these 
+
+Use YOUR printf() function to do the following:
+
+(1). Run the Program MTX4.0 in 4.3.
+     In YOUR main(): print "This is my first OS kernel"
+
+(2). Run the Multitasking program MTX4.1 in 4.3.3
+
+(3). Run the Dynamic Process program MTX4.2 in 4.4.
+
+=======================================================================
+Part B. REQUIREMENTS:
+
+   IMPLEMENT exit, sleep, wakeup, wait functions in the MTX kernel.
+
+
+   Download files from samples/LAB2. 
+   mtximage is a FD image contining solution.
+
+   Run QEMY on mtximage: The command menu is
+
+           [s|f|q|w ] 
+
+   where s : switch process
+         f : kfork a child process
+         q : process exit with a value
+         w : wait for a ZOMBIE child
+
+Write YOUR C code (per Chapter 4) for 
+     
+     int ksleep(int event);
+     int kwakeup(int event);
+
+     int kexit(int exitvalue);
+     int kwait(int *status);
+
+Make YOUR t.c file work as in the SOLUTION.
+==========================================================================
